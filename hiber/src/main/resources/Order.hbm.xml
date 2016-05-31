@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="org.demo.models.Order" table="ORDERS">
+        <id name="id" type="int" column="ORDER_NUM">
+            <generator class="native"/>
+        </id>
+        <property name="cust" column="CUST" type="int"/>
+        <property name="rep" column="REP" type="int"/>
+        <property name="mfr" column="MFR" type="char"/>
+        <property name="product" column="PRODUCT" type="char"/>
+        <property name="order_date" column="ORDER_DATE" type="java.sql.Date"/>
+        <property name="qty" column="QTY" type="int"/>
+        <property name="amount" column="AMOUNT" type="java.math.BigDecimal"/>
+    </class>
+</hibernate-mapping>

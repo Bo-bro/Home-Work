@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="org.demo.models.Product" table="PRODUCTS">
+        <composite-id >
+            <key-property name="mfr_id" column="MFR_ID" type="char"/>
+            <key-property name="product_id"  column="PRODUCT_ID" type="char" />
+        </composite-id>
+
+        <property name="description" column="DESCRIPTION" type="java.lang.String"/>
+        <property name="price" column="PRICE" type="big_decimal"/>
+        <property name="qty_on_hand" column="QTY_ON_HAND" type="int"/>
+    </class>
+</hibernate-mapping>
