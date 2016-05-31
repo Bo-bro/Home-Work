@@ -14,11 +14,11 @@ import java.util.Set;
 public class Product implements Serializable {
     @Id
   // private ProductPK productPK;
-    @Column(name = "MFR_ID",columnDefinition="CHAR_ARRAY")
+    @Column(name = "MFR_ID",columnDefinition="char(3)")
 
     private String mfr_id;
     @Id
-    @Column(name = "PRODUCT_ID",columnDefinition="varchar")
+    @Column(name = "PRODUCT_ID",columnDefinition="char(5)")
 
     private String product_id;
 
