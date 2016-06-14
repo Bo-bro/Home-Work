@@ -1,4 +1,4 @@
 package org.demo.dao.api;
 
-public interface OrderDao extends CrudDao{
+public interface OrderDao<OrderEntity,Integer> extends CrudDao<OrderEntity,Integer>{
 }

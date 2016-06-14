@@ -8,7 +8,7 @@ import org.hibernate.SessionFactory;
 
 import java.util.List;
 
-public class OfficeDaoImpl implements OfficeDao{
+public class OfficeDaoImpl extends CrudDaoImpl<OfficesEntity,Integer> implements OfficeDao<OfficesEntity,Integer>{
    private static OfficeDaoImpl instance;
 
     private OfficeDaoImpl() {

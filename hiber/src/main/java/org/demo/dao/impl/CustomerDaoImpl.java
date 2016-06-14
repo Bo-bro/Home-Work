@@ -13,7 +13,7 @@ import java.util.List;
 //import org.demo.models.CustomersEn;
 
 
-public class CustomerDaoImpl implements CustomerDao {
+public class CustomerDaoImpl extends CrudDaoImpl<CustomersEntity,Integer> implements CustomerDao<CustomersEntity,Integer>{
 
 
     private final Connection connection;

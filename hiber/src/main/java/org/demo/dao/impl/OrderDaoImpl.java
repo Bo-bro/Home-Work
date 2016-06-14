@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class OrderDaoImpl implements OrderDao{
+public class OrderDaoImpl extends CrudDaoImpl<OrdersEntity,Integer> implements OrderDao<OrdersEntity,Integer>{
 
     private final Connection connection;
 

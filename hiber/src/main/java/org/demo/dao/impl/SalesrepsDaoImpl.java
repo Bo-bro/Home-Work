@@ -11,7 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SalesrepsDaoImpl implements SalesrepsDao{
+public class SalesrepsDaoImpl extends CrudDaoImpl<SalesrepsEntity,Integer> implements SalesrepsDao<SalesrepsEntity,Integer>{
     private final Connection connection;
 
     public SalesrepsDaoImpl(Connection connection) {

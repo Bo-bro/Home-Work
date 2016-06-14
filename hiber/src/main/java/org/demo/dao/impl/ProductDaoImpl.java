@@ -10,7 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductDaoImpl implements ProductDao{
+public class ProductDaoImpl extends CrudDaoImpl<ProductsEntity,Integer> implements ProductDao<ProductsEntity,Integer>{
     private final Connection connection;
 
     public ProductDaoImpl(Connection connection) {
