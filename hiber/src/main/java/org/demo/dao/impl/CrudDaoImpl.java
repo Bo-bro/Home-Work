@@ -1,6 +1,5 @@
 package org.demo.dao.impl;
 
-import org.OfficesEntity;
 import org.demo.dao.api.CrudDao;
 import org.demo.helpers.HibernateUtil;
 import org.hibernate.Session;
@@ -14,15 +13,14 @@ T t;
     public List<T> getAll() {
         SessionFactory factory = HibernateUtil.getSessionFactory();
         Session session = factory.openSession();
-        List<T> entityList =  (List<T>)session.createCriteria(t.class).list();
-
+        List<T> entityList = (List<T>) session.createCriteria(t.getClass()).list();
+        //or T.class
 
         return entityList;
-
-
-
-        return null;
     }
+
+
+
 
     @Override
     public void create(T t) {
