@@ -1,6 +1,7 @@
-package org.demo.dao;
+package org.demo.dao.impl;
 
-import org.demo.models.Product;
+import org.CustomersEntity;
+import org.demo.dao.api.CustomerDao;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -9,48 +10,53 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductDao {
+//import org.demo.models.CustomersEn;
+
+
+public class CustomerDaoImpl implements CustomerDao {
+
+
     private final Connection connection;
 
-    public ProductDao(Connection connection) {
+    public CustomerDaoImpl(Connection connection) {
         this.connection = connection;
     }
 
 
-    public boolean save(Product product) {
-        String sql = String.format("insert into PRODUCTS(QTY_ON_HAND,PRICE,DESRIPTION) values(%d,'%s','%s')",
-                product.getQty_on_hand(), product.getPrice(), product.getDescription());
+    public boolean save(CustomersEntity customer) {
+        String sql = String.format("insert into CUSTOMERS(CUST_NUM,COMPANY,CREDIT_LIMIT) values(%d,'%s','%s')",
+                customer.getCustNum(), customer.getCompany(), customer.getCreditLimit());
         return executeSql(sql);
     }
 
-    public boolean update(Product product) {
-        String sql = String.format("update PRODUCTS set PRICE='%s', DESRIPTION='%s' where QTY_ON_HAND=%d",
-                product.getPrice(), product.getDescription(), product.getQty_on_hand());
+    public boolean update(CustomersEntity customer) {
+        String sql = String.format("update CUSTOMERS set COMPANY='%s', CREDIT_LIMIT='%s' where CUST_NUM=%d",
+                customer.getCompany(), customer.getCreditLimit(), customer.getCustNum());
         return executeSql(sql);
     }
 
-    public boolean delete(Product product) {
-        String sql = String.format("delete from PRODUCTS where QTY_ON_HAND=%s",
-                product.getQty_on_hand());
+    public boolean delete(CustomersEntity customer) {
+        String sql = String.format("delete from CUSTOMERS where CUST_NUM=%s",
+                customer.getCustNum());
         return executeSql(sql);
     }
 
-    public Product getById(int id) {
-        String sql = String.format("select QTY_ON_HAND,PRICE,DESRIPTION from PRODUCTS where QTY_ON_HAND=%d",
+    public CustomersEntity getById(int id) {
+        String sql = String.format("select CUST_NUM,COMPANY,CREDIT_LIMIT from CUSTOMERS where CUST_NUM=%d",
                 id);
         Statement statement = null;
         try {
             statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
-            Product product = null;
+            CustomersEntity customer = null;
             if (resultSet.next()) {
-                product = new Product();
-                product.setQty_on_hand(resultSet.getInt("QTY_ON_HAND"));
-                product.setPrice(resultSet.getBigDecimal("PRICE"));
-                product.setDescription(resultSet.getString("DESRIPTION"));
+                customer = new CustomersEntity();
+                customer.setCustNum(resultSet.getInt("CUST_NUM"));
+                customer.setCompany(resultSet.getString("COMPANY"));
+                customer.setCreditLimit(resultSet.getBigDecimal("CREDIT_LIMIT"));
             }
             resultSet.close();
-            return product;
+            return customer;
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -65,19 +71,19 @@ public class ProductDao {
         return null;
     }
 
-    public List<Product> getAll() {
-        String sql = "select QTY_ON_HAND,PRICE,DESRIPTION from PRODUCTS";
+    public List<CustomersEntity> getAll() {
+        String sql = "select CUST_NUM,COMPANY,CREDIT_LIMIT from CUSTOMERS";
         Statement statement = null;
-        List<Product> products = new ArrayList<Product>();
+        List<CustomersEntity> customers = new ArrayList<CustomersEntity>();
         try {
             statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
-                Product product = new Product();
-                product.setQty_on_hand(resultSet.getInt("QTY_ON_HAND"));
-                product.setPrice(resultSet.getBigDecimal("PRICE"));
-                product.setDescription(resultSet.getString("DESRIPTION"));
-                products.add(product);
+                CustomersEntity customer = new CustomersEntity();
+                customer.setCustNum(resultSet.getInt("CUST_NUM"));
+                customer.setCompany(resultSet.getString("COMPANY"));
+                customer.setCreditLimit(resultSet.getBigDecimal("CREDIT_LIMIT"));
+                customers.add(customer);
             }
             resultSet.close();
         } catch (SQLException e) {
@@ -91,7 +97,7 @@ public class ProductDao {
                 }
             }
         }
-        return products;
+        return customers;
     }
 
     private boolean executeSql(String sql) {
@@ -114,4 +120,5 @@ public class ProductDao {
         return count == 1;
     }
 }
+
 

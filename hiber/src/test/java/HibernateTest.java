@@ -1,5 +1,5 @@
+import org.SalesrepsEntity;
 import org.demo.helpers.HibernateUtil;
-import org.demo.models.Salesreps;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -14,7 +14,7 @@ public class HibernateTest {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            Salesreps office = session.get(Salesreps.class, 101);
+            SalesrepsEntity office = session.get(SalesrepsEntity.class, 101);
             Assert.assertNotNull(office);
   System.out.println(  office.toString()+ "office.toString()");
 //            Assert.assertNotNull(office.getRegion());

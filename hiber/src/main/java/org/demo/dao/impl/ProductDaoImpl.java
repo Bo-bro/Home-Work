@@ -1,7 +1,7 @@
-package org.demo.dao;
+package org.demo.dao.impl;
 
-
-import org.demo.models.Order;
+import org.ProductsEntity;
+import org.demo.dao.api.ProductDao;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -10,50 +10,48 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class OrderDao {
-
+public class ProductDaoImpl implements ProductDao{
     private final Connection connection;
 
-    public OrderDao(Connection connection) {
+    public ProductDaoImpl(Connection connection) {
         this.connection = connection;
     }
 
 
-    public boolean save(Order order) {
-        String sql = String.format("insert into ORDERS(ORDER_NUM,ORDER_DATE,QTY) values(%d,'%s','%s')",
-                order.getId(), order.getOrder_date(), order.getQty());
+    public boolean save(ProductsEntity product) {
+        String sql = String.format("insert into PRODUCTS(QTY_ON_HAND,PRICE,DESRIPTION) values(%d,'%s','%s')",
+                product.getQtyOnHand(), product.getPrice(), product.getDescription());
         return executeSql(sql);
     }
 
-    public boolean update(Order order) {
-        String sql = String.format("update ORDERS set ORDER_DATE='%s', QTY='%s' where ORDER_NUM=%d",
-                order.getOrder_date(), order.getQty(), order.getId());
+    public boolean update(ProductsEntity product) {
+        String sql = String.format("update PRODUCTS set PRICE='%s', DESRIPTION='%s' where QTY_ON_HAND=%d",
+                product.getPrice(), product.getDescription(), product.getQtyOnHand());
         return executeSql(sql);
     }
 
-    public boolean delete(Order order) {
-        String sql = String.format("delete from ORDERS where ORDER_NUM=%s",
-                order.getId());
+    public boolean delete(ProductsEntity product) {
+        String sql = String.format("delete from PRODUCTS where QTY_ON_HAND=%s",
+                product.getQtyOnHand());
         return executeSql(sql);
     }
 
-    public Order getById(int id) {
-        String sql = String.format("select ORDER_DATE,QTY,CUST,MFR,REP from ORDERS where ORDER_NUM=%d",
+    public ProductsEntity getById(int id) {
+        String sql = String.format("select QTY_ON_HAND,PRICE,DESRIPTION from PRODUCTS where QTY_ON_HAND=%d",
                 id);
         Statement statement = null;
         try {
             statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
-            Order order = null;
+            ProductsEntity product = null;
             if (resultSet.next()) {
-                order = new Order();
-                order.setId(resultSet.getInt("ORDER_NUM"));
-                order.setOrder_date(resultSet.getDate("ORDER_DATE"));
-                order.setQty(resultSet.getInt("QTY"));
+                product = new ProductsEntity();
+                product.setQtyOnHand(resultSet.getInt("QTY_ON_HAND"));
+                product.setPrice(resultSet.getBigDecimal("PRICE"));
+                product.setDescription(resultSet.getString("DESRIPTION"));
             }
             resultSet.close();
-            return order;
+            return product;
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -68,19 +66,19 @@ public class OrderDao {
         return null;
     }
 
-    public List<Order> getAll() {
-        String sql = "select ORDER_NUM,ORDER_DATE,QTY from ORDERS";
+    public List<ProductsEntity> getAll() {
+        String sql = "select QTY_ON_HAND,PRICE,DESRIPTION from PRODUCTS";
         Statement statement = null;
-        List<Order> orders = new ArrayList<Order>();
+        List<ProductsEntity> products = new ArrayList<ProductsEntity>();
         try {
             statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
-                Order order = new Order();
-                order.setId(resultSet.getInt("ORDER_NUM"));
-                order.setOrder_date(resultSet.getDate("ORDER_DATE"));
-                order.setQty(resultSet.getInt("QTY"));
-                orders.add(order);
+                ProductsEntity product = new ProductsEntity();
+                product.setQtyOnHand(resultSet.getInt("QTY_ON_HAND"));
+                product.setPrice(resultSet.getBigDecimal("PRICE"));
+                product.setDescription(resultSet.getString("DESRIPTION"));
+                products.add(product);
             }
             resultSet.close();
         } catch (SQLException e) {
@@ -94,7 +92,7 @@ public class OrderDao {
                 }
             }
         }
-        return orders;
+        return products;
     }
 
     private boolean executeSql(String sql) {
@@ -117,5 +115,4 @@ public class OrderDao {
         return count == 1;
     }
 }
-
 

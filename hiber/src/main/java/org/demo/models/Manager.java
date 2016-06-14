@@ -1,35 +1,35 @@
-package org.demo.models;
-
-import lombok.Data;
-
-import javax.persistence.*;
-import java.io.Serializable;
-@Data
-@Entity
-@Table(name = "SALESREPS")
-public class Manager implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "EMPL_NUM")
-    @OneToMany(mappedBy = "MANAGER")
-    private int id;
-
-    @Column(name = "NAME")
-    private String name;
+//package org.demo.models;
 //
-//    public String getName() {
-//        return name;
-//    }
+//import lombok.Data;
 //
-//    public void setName(String name) {
-//        this.name = name;
-//    }
+//import javax.persistence.*;
+//import java.io.Serializable;
+//@Data
+//@Entity
+//@Table(name = "SALESREPS")
+//public class Manager implements Serializable {
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Column(name = "EMPL_NUM")
+//  //  @OneToMany(mappedBy = "MANAGER")
+//    private int id;
 //
-//    public int getId() {
-//        return id;
-//    }
-//
-//    public void setId(int id) {
-//        this.id = id;
-//    }
-}
+//    @Column(name = "NAME")
+//    private String name;
+////
+////    public String getName() {
+////        return name;
+////    }
+////
+////    public void setName(String name) {
+////        this.name = name;
+////    }
+////
+////    public int getId() {
+////        return id;
+////    }
+////
+////    public void setId(int id) {
+////        this.id = id;
+////    }
+//}

@@ -1,6 +1,8 @@
-package org.demo.dao;
+package org.demo.dao.impl;
 
-import org.demo.models.Customer;
+
+import org.OrdersEntity;
+import org.demo.dao.api.OrderDao;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -10,50 +12,49 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class CustomerDao {
-
+public class OrderDaoImpl implements OrderDao{
 
     private final Connection connection;
 
-    public CustomerDao(Connection connection) {
+    public OrderDaoImpl(Connection connection) {
         this.connection = connection;
     }
 
 
-    public boolean save(Customer customer) {
-        String sql = String.format("insert into CUSTOMERS(CUST_NUM,COMPANY,CREDIT_LIMIT) values(%d,'%s','%s')",
-                customer.getId(), customer.getCompany(), customer.getCredit_limit());
+    public boolean save(OrdersEntity order) {
+        String sql = String.format("insert into ORDERS(ORDER_NUM,ORDER_DATE,QTY) values(%d,'%s','%s')",
+                order.getOrderNum(), order.getOrderDate(), order.getQty());
         return executeSql(sql);
     }
 
-    public boolean update(Customer customer) {
-        String sql = String.format("update CUSTOMERS set COMPANY='%s', CREDIT_LIMIT='%s' where CUST_NUM=%d",
-                customer.getCompany(), customer.getCredit_limit(), customer.getId());
+    public boolean update(OrdersEntity order) {
+        String sql = String.format("update ORDERS set ORDER_DATE='%s', QTY='%s' where ORDER_NUM=%d",
+                order.getOrderDate(), order.getQty(), order.getOrderNum());
         return executeSql(sql);
     }
 
-    public boolean delete(Customer customer) {
-        String sql = String.format("delete from CUSTOMERS where CUST_NUM=%s",
-                customer.getId());
+    public boolean delete(OrdersEntity order) {
+        String sql = String.format("delete from ORDERS where ORDER_NUM=%s",
+                order.getOrderNum());
         return executeSql(sql);
     }
 
-    public Customer getById(int id) {
-        String sql = String.format("select CUST_NUM,COMPANY,CREDIT_LIMIT from CUSTOMERS where CUST_NUM=%d",
+    public OrdersEntity getById(int id) {
+        String sql = String.format("select ORDER_DATE,QTY,CUST,MFR,REP from ORDERS where ORDER_NUM=%d",
                 id);
         Statement statement = null;
         try {
             statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
-            Customer customer = null;
+            OrdersEntity order = null;
             if (resultSet.next()) {
-                customer = new Customer();
-                customer.setId(resultSet.getInt("CUST_NUM"));
-                customer.setCompany(resultSet.getString("COMPANY"));
-                customer.setCredit_limit(resultSet.getBigDecimal("CREDIT_LIMIT"));
+                order = new OrdersEntity();
+                order.setOrderNum(resultSet.getInt("ORDER_NUM"));
+                order.setOrderDate(resultSet.getDate("ORDER_DATE"));
+                order.setQty(resultSet.getInt("QTY"));
             }
             resultSet.close();
-            return customer;
+            return order;
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -68,19 +69,19 @@ public class CustomerDao {
         return null;
     }
 
-    public List<Customer> getAll() {
-        String sql = "select CUST_NUM,COMPANY,CREDIT_LIMIT from CUSTOMERS";
+    public List<OrdersEntity> getAll() {
+        String sql = "select ORDER_NUM,ORDER_DATE,QTY from ORDERS";
         Statement statement = null;
-        List<Customer> customers = new ArrayList<Customer>();
+        List<OrdersEntity> orders = new ArrayList<OrdersEntity>();
         try {
             statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
-                Customer customer = new Customer();
-                customer.setId(resultSet.getInt("CUST_NUM"));
-                customer.setCompany(resultSet.getString("COMPANY"));
-                customer.setCredit_limit(resultSet.getBigDecimal("CREDIT_LIMIT"));
-                customers.add(customer);
+                OrdersEntity order = new OrdersEntity();
+                order.setOrderNum(resultSet.getInt("ORDER_NUM"));
+                order.setOrderDate(resultSet.getDate("ORDER_DATE"));
+                order.setQty(resultSet.getInt("QTY"));
+                orders.add(order);
             }
             resultSet.close();
         } catch (SQLException e) {
@@ -94,7 +95,7 @@ public class CustomerDao {
                 }
             }
         }
-        return customers;
+        return orders;
     }
 
     private boolean executeSql(String sql) {
